@@ -1,0 +1,3 @@
+ghost/mysql-data/
+ghost/www-data/
+traefik_ssl/ssl/

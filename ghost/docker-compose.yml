@@ -1,0 +1,76 @@
+version: '3.8'
+services:
+  reverse-proxy:
+    image: traefik:latest
+    restart: always
+    container_name: treafik
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+    networks:
+      - traefik
+
+  ghost:
+    image: ghost:latest
+    restart: always
+    container_name: ghost
+    environment:
+      database__client: mysql
+      database__connection__host: db
+      database__connection__user: ghost
+      database__connection__password: ghostpassword
+      database__connection__database: ghost
+      url: http://ghost.tchit.ovh/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.services.monblog.loadbalancer.server.port=2368"
+      - "traefik.http.routers.monblog.rule=Host(`ghost.tchit.ovh`)"
+      - "traefik.http.routers.monblog.entrypoints=http"
+      #- "traefik.http.middlewares.myAdmin.ipWhiteList.sourceRange=148.196.132.30"
+      #- "traefik.http.routers.monblog.middlewares=myAdmin@docker"
+    volumes:
+      - www-data:/var/lib/ghost/content
+    networks:
+      - traefik
+      - lan
+  
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: ghost
+      MYSQL_DATABASE: ghost
+      MYSQL_PASSWORD: ghostpassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - lan
+
+volumes:
+  mysql-data:
+    name: mysql-data
+    #driver: local
+    driver_opts:
+      type: none
+      device: ./mysql-data
+      o: bind
+  
+  www-data:
+    name: www-data
+    #driver: local
+    driver_opts:
+      type: none
+      device: ./www-data
+      o: bind
+
+networks:
+  lan:
+    name: lan
+
+  traefik:
+    name: traefik

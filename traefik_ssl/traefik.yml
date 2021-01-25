@@ -1,0 +1,23 @@
+providers:
+  docker:
+    exposedByDefault: false
+
+  file:
+    directory: /etc/traefik/config/
+    watch: true
+
+entryPoints:
+  http:
+    address: :80
+
+  https:
+    address: :443
+
+certificatesResolvers:
+  caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
+  myhttpchallenge:
+    acme:
+      email: "tchit@tchit.com"
+      storage: "/letsencrypt/acme.json"
+      httpChallenge:
+        entryPoint: http

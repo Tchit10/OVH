@@ -1,0 +1,101 @@
+version: '3.8'
+services:
+  reverse-proxy:
+    image: traefik:latest
+    container_name: treafik
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./conf:/etc/traefik/config/:ro
+      - ./ssl:/letsencrypt
+    networks:
+      - traefik
+
+  whoami:
+    image: containous/whoami:latest
+    container_name: whoami
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`vps.tchit.ovh`)"
+      - "traefik.http.routers.whoami.middlewares=SecHeader@file"
+      - "traefik.http.services.whoami.loadbalancer.server.port=80"
+      - "traefik.http.routers.whoami-https.rule=Host(`vps.tchit.ovh`)"
+      - "traefik.http.routers.whoami-https.middlewares=SecHeader@file"
+      - "traefik.http.routers.whoami-https.entrypoints=https"
+      - "traefik.http.routers.whoami-https.tls=true"
+      - "traefik.http.routers.whoami-https.tls.certresolver=myhttpchallenge"
+      #- "traefik.http.middlewares.myAdmin.ipWhiteList.sourceRange=148.196.132.30"
+      #- "traefik.http.routers.whoami.middlewares=myAdmin@docker"
+    networks:
+      - traefik
+
+  ghost:
+    image: ghost:latest
+    restart: always
+    container_name: ghost
+    environment:
+      database__client: mysql
+      database__connection__host: db
+      database__connection__user: ghost
+      database__connection__password: ghostpassword
+      database__connection__database: ghost
+      url: http://ghost.tchit.ovh/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik"
+      - "traefik.http.routers.monblog.rule=Host(`ghost.tchit.ovh`)"
+      - "traefik.http.routers.monblog.middlewares=SecHeader@file"
+      - "traefik.http.services.monblog.loadbalancer.server.port=2368"
+      - "traefik.http.routers.monblog-https.rule=Host(`ghost.tchit.ovh`)"
+      - "traefik.http.routers.monblog-https.middlewares=SecHeader@file"
+      - "traefik.http.routers.monblog-https.entrypoints=https"
+      - "traefik.http.routers.monblog-https.tls=true"
+      - "traefik.http.routers.monblog-https.tls.certresolver=myhttpchallenge"
+      #- "traefik.http.middlewares.myAdmin.ipWhiteList.sourceRange=148.196.132.30"
+      #- "traefik.http.routers.monblog.middlewares=myAdmin@docker"
+    volumes:
+      - www-data:/var/lib/ghost/content
+    networks:
+      - traefik
+      - lan
+
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_USER: ghost
+      MYSQL_DATABASE: ghost
+      MYSQL_PASSWORD: ghostpassword
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - lan
+
+volumes:
+  mysql-data:
+    name: mysql-data
+    #driver: local
+    driver_opts:
+      type: none
+      device: /home/debian/docker/ghost/mysql-data
+      o: bind
+
+  www-data:
+    name: www-data
+    #driver: local
+    driver_opts:
+      type: none
+      device: /home/debian/docker/ghost/www-data
+      o: bind
+
+networks:
+  lan:
+    name: lan
+
+  traefik:
+    name: traefik

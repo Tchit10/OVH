@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  reverse-proxy:
+    image: traefik:latest
+    container_name: treafik
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./traefik.yml:/etc/traefik/traefik.yml:ro
+
+  whoami:
+    image: containous/whoami:latest
+    #container_name: whoami
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.whoami.rule=Host(`vps.tchit.ovh`)"
+      #- "traefik.http.middlewares.myAdmin.ipWhiteList.sourceRange=148.196.132.30"
+      #- "traefik.http.routers.whoami.middlewares=myAdmin@docker"
