@@ -1,3 +1,5 @@
 ghost/mysql-data/
 ghost/www-data/
 traefik_ssl/ssl/
+traefik_ssl/.env_db
+traefik_ssl/.env_ghost

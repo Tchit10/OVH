@@ -37,13 +37,8 @@ services:
     image: ghost:latest
     restart: always
     container_name: ghost
-    environment:
-      database__client: mysql
-      database__connection__host: db
-      database__connection__user: ghost
-      database__connection__password: ghostpassword
-      database__connection__database: ghost
-      url: http://ghost.tchit.ovh/
+    env_file:
+      - ./.env_ghost
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
@@ -66,11 +61,8 @@ services:
   db:
     image: mysql:5.7
     container_name: mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_USER: ghost
-      MYSQL_DATABASE: ghost
-      MYSQL_PASSWORD: ghostpassword
+    env_file:
+      - ./.env_db
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
