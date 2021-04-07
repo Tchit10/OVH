@@ -17,7 +17,7 @@ certificatesResolvers:
   caServer: "https://acme-staging-v02.api.letsencrypt.org/directory"
   myhttpchallenge:
     acme:
-      email: "tchit@tchit.com"
+      email: "info@tchit.ovh"
       storage: "/letsencrypt/acme.json"
       httpChallenge:
         entryPoint: http
