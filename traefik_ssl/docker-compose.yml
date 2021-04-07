@@ -74,7 +74,7 @@ volumes:
     #driver: local
     driver_opts:
       type: none
-      device: /home/debian/docker/ghost/mysql-data
+      device: /home/debian/OVH/ghost/mysql-data
       o: bind
 
   www-data:
@@ -82,7 +82,7 @@ volumes:
     #driver: local
     driver_opts:
       type: none
-      device: /home/debian/docker/ghost/www-data
+      device: /home/debian/OVH/ghost/www-data
       o: bind
 
 networks:
