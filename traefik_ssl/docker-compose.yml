@@ -17,7 +17,6 @@ services:
   portainer:
     image: portainer/portainer:latest
     container_name: portainer
-    command: -H unix:///var/run/docker.sock
     restart: always
     labels:
       - "traefik.enable=true"
@@ -29,14 +28,6 @@ services:
       - "traefik.http.routers.portainer-front-https.entrypoints=https"
       - "traefik.http.routers.portainer-front-https.tls=true"
       - "traefik.http.routers.portainer-front-https.tls.certresolver=myhttpchallenge"
-      - "traefik.http.routers.portainer-edge.rule=Host(`portainer.tchit.ovh`)"
-      - "traefik.http.routers.portainer-edge.middlewares=SecHeader@file"
-      - "traefik.http.services.portainer-edge.loadbalancer.server.port=8000"
-      - "traefik.http.routers.portainer-edge-https.rule=Host(`portainer.tchit.ovh`)"
-      - "traefik.http.routers.portainer-edge-https.middlewares=SecHeader@file"
-      - "traefik.http.routers.portainer-edge-https.entrypoints=https"
-      - "traefik.http.routers.portainer-edge-https.tls=true"
-      - "traefik.http.routers.portainer-edge-https.tls.certresolver=myhttpchallenge"
     networks:
       - traefik
     volumes:
