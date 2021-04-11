@@ -58,7 +58,7 @@ services:
     restart: always
     container_name: ghost
     env_file:
-      - ./.env_ghost
+      - .env_ghost
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=traefik"
@@ -82,7 +82,7 @@ services:
     image: mysql:5.7
     container_name: mysql
     env_file:
-      - ./.env_db
+      - .env_db
     volumes:
       - mysql-data:/var/lib/mysql
     networks:
