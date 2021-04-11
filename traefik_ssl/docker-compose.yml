@@ -14,6 +14,35 @@ services:
     networks:
       - traefik
 
+  portainer:
+    image: portainer/portainer:latest
+    container_name: portainer
+    command: -H unix:///var/run/docker.sock
+    restart: always
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portainer-front.rule=Host(`portainer.tchit.ovh`)"
+      - "traefik.http.routers.portainer-front.middlewares=SecHeader@file"
+      - "traefik.http.services.portainer-front.loadbalancer.server.port=9000"
+      - "traefik.http.routers.portainer-front-https.rule=Host(`portainer.tchit.ovh`)"
+      - "traefik.http.routers.portainer-front-https.middlewares=SecHeader@file"
+      - "traefik.http.routers.portainer-front-https.entrypoints=https"
+      - "traefik.http.routers.portainer-front-https.tls=true"
+      - "traefik.http.routers.portainer-front-https.tls.certresolver=myhttpchallenge"
+      - "traefik.http.routers.portainer-edge.rule=Host(`portainer.tchit.ovh`)"
+      - "traefik.http.routers.portainer-edge.middlewares=SecHeader@file"
+      - "traefik.http.services.portainer-edge.loadbalancer.server.port=8000"
+      - "traefik.http.routers.portainer-edge-https.rule=Host(`portainer.tchit.ovh`)"
+      - "traefik.http.routers.portainer-edge-https.middlewares=SecHeader@file"
+      - "traefik.http.routers.portainer-edge-https.entrypoints=https"
+      - "traefik.http.routers.portainer-edge-https.tls=true"
+      - "traefik.http.routers.portainer-edge-https.tls.certresolver=myhttpchallenge"
+    networks:
+      - traefik
+    volumes:
+      - portainer-data:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+
   whoami:
     image: containous/whoami:latest
     container_name: whoami
@@ -83,6 +112,14 @@ volumes:
     driver_opts:
       type: none
       device: /home/debian/OVH/ghost/www-data
+      o: bind
+
+  portainer-data:
+    name: portainer-data
+    #driver: local
+    driver_opts:
+      type: none
+      device: /home/debian/OVH/portainer/portainer-data
       o: bind
 
 networks:
