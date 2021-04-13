@@ -4,3 +4,7 @@ traefik_ssl/ssl/
 traefik_ssl/.env_db
 traefik_ssl/.env_ghost
 portainer/portainer-data
+vsftpd/vsftpd_cert/
+vsftpd/vsftpd_conf/
+vsftpd/vsftpd_logs/
+vsftpd/shared_ftp

@@ -1,8 +1,9 @@
-version: 2
+version: '3.8'
 services:
   vsftpd:
     image: panubo/vsftpd:latest
     container_name: vsftpd
+    command: "vsftpd /etc/vsftpd_ssl.conf"
     hostname: vsftpd
     restart: always
     ports:
@@ -12,7 +13,41 @@ services:
       - "vsftpd_cert:/etc/ssl:ro"
       - "shared_ftp:/srv:ro"
       - "vsftpd_logs:/var/log"
-      - "vstfpd_conf:/etc/vsftpd"
+      - "vsftpd_conf:/etc/vsftpd"
     environment:
       - FTP_USER_1=toto:67D5BC1C36295BB7455AE165806A3CCD6A4E438EDBACEA82C6764C6F70F0AB2A46D8CF1392782C9388511CDCF189082BDDB8ED405FB87B5078956117DDEF6C37
       - FTP_USER_2=tata:67D5BC1C36295BB7455AE165806A3CCD6A4E438EDBACEA82C6764C6F70F0AB2A46D8CF1392782C9388511CDCF189082BDDB8ED405FB87B5078956117DDEF6C37
+
+volumes:
+  vsftpd_cert:
+    name: vsftpd_cert
+    #driver: local
+    driver_opts:
+      type: none
+      device: ./vsftpd_cert
+      o: bind
+
+  vsftpd_logs:
+    name: vsftpd_logs
+    #driver: local
+    driver_opts:
+      type: none
+      device: ./vsftpd_logs
+      o: bind
+  
+  vsftpd_conf:
+    name: vsftpd_conf
+    #driver: local
+    driver_opts:
+      type: none
+      device: ./vsftpd_conf
+      o: bind
+
+  shared_ftp:
+    name: shared_ftp
+    #driver: local
+    driver_opts:
+      type: none
+      device: ./shared_ftp
+      o: bind
+
