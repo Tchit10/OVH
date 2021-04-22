@@ -28,7 +28,7 @@ services:
       - traefik
 
   portainer:
-    image: portainer/portainer:latest
+    image: portainer/portainer-ce:latest
     container_name: portainer
     restart: always
     labels:
