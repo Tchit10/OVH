@@ -16,3 +16,8 @@ http:
         frameDeny: true
         contentTypeNosniff: true
         browserXssFilter: true
+    
+    traefik-auth:
+      basicAuth:
+        users:
+          - "admin:$apr1$WWY98SSW$IOqipqEV4.2fYl8YFJaHG1"
