@@ -9,3 +9,4 @@ vsftpd/vsftpd_conf/
 vsftpd/vsftpd_logs/
 vsftpd/shared_ftp
 jenkins2/jenkins_home
+gitlab/gitlab-data
