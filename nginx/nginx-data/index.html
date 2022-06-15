@@ -25,5 +25,29 @@
           <div class="load__bar load__bar--5-inv"></div>
         </div>
      </div>
+     <ul>
+       <li><a href="#">Home</a></li>
+       <li><a href="#">About</a></li>
+       <li><a href="#">Portfolio</a></li>
+       <li><a href="#">Team</a></li>
+       <li><a href="#">Contact</a></li>
+       <div id="marker"></div>
+     </ul>
+
+     <script>
+       const marker = document.querySelector('marker');
+       const item = document.querySelector('ul li a');
+
+       function Indicator(e){
+         marker.style.left = e.offsetLeft+'px';
+         marker.style.width = e.offsetWidth+'px';
+       }
+
+       item.forEach(link => {
+         link.addEventListener('mousemove', (e) => {
+           Indicator(e.target);
+         }
+       }
+     </script>
 </body>
 </html>
