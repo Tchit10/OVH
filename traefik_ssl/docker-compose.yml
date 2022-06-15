@@ -47,30 +47,30 @@ services:
       - portainer-data:/data
       - /var/run/docker.sock:/var/run/docker.sock
       
-  gitlab:
-    image: gitlab/gitlab-ce:latest
-    container_name: gitlab
-    restart: always
-    environment:
-      GITLAB_OMNIBUS_CONFIG: |
-        external_url 'gitlab.tchit.ovh'
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.portainer-front.rule=Host(`gitlab.tchit.ovh`)"
-      - "traefik.http.routers.portainer-front.middlewares=SecHeader@file"
-      - "traefik.http.services.portainer-front.loadbalancer.server.port=80"
-      - "traefik.http.routers.portainer-front-https.rule=Host(`gitlab.tchit.ovh`)"
-      - "traefik.http.routers.portainer-front-https.middlewares=SecHeader@file"
-      - "traefik.http.routers.portainer-front-https.entrypoints=https"
-      - "traefik.http.routers.portainer-front-https.tls=true"
-      - "traefik.http.routers.portainer-front-https.tls.certresolver=myhttpchallenge"
-    networks:
-      - traefik
-    volumes:
-      - gitlab-data/config:/etc/gitlab
-      - gitlab-data/logs:/var/log/gitlab
-      - gitlab-data/data:/var/opt/gitlab
-      - /var/run/docker.sock:/var/run/docker.sock
+#  gitlab:
+#    image: gitlab/gitlab-ce:latest
+#    container_name: gitlab
+#    restart: always
+    #environment:
+    #  GITLAB_OMNIBUS_CONFIG: |
+    #    external_url 'https://gitlab.tchit.ovh/'
+#    labels:
+#      - "traefik.enable=true"
+#      - "traefik.http.routers.portainer-front.rule=Host(`gitlab.tchit.ovh`)"
+#      - "traefik.http.routers.portainer-front.middlewares=SecHeader@file"
+#      - "traefik.http.services.portainer-front.loadbalancer.server.port=80"
+#      - "traefik.http.routers.portainer-front-https.rule=Host(`gitlab.tchit.ovh`)"
+#      - "traefik.http.routers.portainer-front-https.middlewares=SecHeader@file"
+#      - "traefik.http.routers.portainer-front-https.entrypoints=https"
+#      - "traefik.http.routers.portainer-front-https.tls=true"
+#      - "traefik.http.routers.portainer-front-https.tls.certresolver=myhttpchallenge"
+#    networks:
+#      - traefik
+#    volumes:
+#      - gitlab-data-config:/etc/gitlab
+#      - gitlab-data-logs:/var/log/gitlab
+#      - gitlab-data-data:/var/opt/gitlab
+#      - /var/run/docker.sock:/var/run/docker.sock
 
   whoami:
     image: containous/whoami:latest
@@ -151,13 +151,29 @@ volumes:
       device: /home/debian/OVH/portainer/portainer-data
       o: bind
     
-  gitlab-data:
-    name: gitlab-data
+#  gitlab-data-config:
+#    name: gitlab-data-config
     #driver: local
-    driver_opts:
-      type: none
-      device: /home/debian/OVH/gitlab/gitlab-data
-      o: bind
+#    driver_opts:
+#      type: none
+#      device: /home/debian/OVH/gitlab/gitlab-data/config
+#      o: bind
+
+#  gitlab-data-logs:
+#    name: gitlab-data-logs
+    #driver: local
+#    driver_opts:
+#      type: none
+#      device: /home/debian/OVH/gitlab/gitlab-data/logs
+#      o: bind
+
+#  gitlab-data-data:
+#    name: gitlab-data-data
+    #driver: local
+#    driver_opts:
+#      type: none
+#      device: /home/debian/OVH/gitlab/gitlab-data/data
+#      o: bind
 
 networks:
   lan:
