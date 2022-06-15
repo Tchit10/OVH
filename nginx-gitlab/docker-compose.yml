@@ -1,0 +1,8 @@
+version: "3.8"
+services:
+  web:
+    image: registry.gitlab.com/tchit10/nginx:latest
+    container_name: nginx-gitlab
+    ports:
+      - 8080:80
+      
