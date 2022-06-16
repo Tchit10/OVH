@@ -1,0 +1,15 @@
+version: "3.3"
+services:
+  gitlab:
+    image: 'gitlab/gitlab-ce:latest'
+    restart: never
+    hostname: 'gitlab'
+    ports:
+      - '80:8181'
+      - '443:4433'
+      - '22:2222'
+    volumes:
+      - '${PWD}/gitlab-data/config:/etc/gitlab'
+      - '${PWD}/gitlab-data/logs:/var/log/gitlab'
+      - '${PWD}/gitlab-data/data:/var/opt/gitlab'
+

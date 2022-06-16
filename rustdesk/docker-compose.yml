@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+  hbbs:
+    image: 'rustdesk/rustdesk-server:latest'
+    restart: unless-stopped
+    hostname: 'hbbs'
+    ports:
+      - '21115:21115'
+      - '21116:21116'
+      - '21116:21116/udp'
+      - '21118:21118'
+    volumes:
+      - '${PWD}/hbbs:/root'
+    command: hbbs -r 149.202.43.149:21117
+  hbbr:
+    image: 'rustdesk/rustdesk-server:latest'
+    restart: unless-stopped
+    hostname: 'hbbr'
+    ports:
+      - '21117:21117'
+      - '21119:21119'
+    volumes:
+      - '${PWD}/hbbr:/root'
