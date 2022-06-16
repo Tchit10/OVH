@@ -11,7 +11,12 @@ services:
       - '21118:21118'
     volumes:
       - '${PWD}/hbbs:/root'
+    networks:
+      - rustdesk-net
     command: hbbs -r 149.202.43.149:21117
+    depends_on:
+      - hbbr
+  
   hbbr:
     image: 'rustdesk/rustdesk-server:latest'
     restart: unless-stopped
@@ -21,3 +26,9 @@ services:
       - '21119:21119'
     volumes:
       - '${PWD}/hbbr:/root'
+    networks:
+      - rustdesk-net
+
+networks:
+  rustdesk-net:
+    external: false
