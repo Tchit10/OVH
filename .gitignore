@@ -13,3 +13,4 @@ gitlab/gitlab-data
 rustdesk/hbbr
 rustdesk/hbbs
 gitlab-runner/config-runner
+gitlab-runner-group/config-runner
