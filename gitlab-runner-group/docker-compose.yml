@@ -1,0 +1,10 @@
+version: "3.3"
+services:
+  gitlab-runner-group:
+    image: 'gitlab/gitlab-runner:latest'
+    hostname: 'gitlab-runner-group'
+    container_name: 'gitlab-runner-group'
+    restart: always
+    volumes:
+      - '/var/run/docker.sock:/var/run.docker.sock'
+      - '${PWD}/config-runner:/etc/gitlab-runner'

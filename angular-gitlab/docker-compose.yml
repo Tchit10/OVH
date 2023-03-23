@@ -1,0 +1,7 @@
+version: "3.8"
+services:
+  angular-cards:
+    image: registry.gitlab.com/tchit10_ci-cd_group/angular-cards:latest
+    container_name: angular-cards
+    ports:
+      - 8585:80
